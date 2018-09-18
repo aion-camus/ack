@@ -43,5 +43,6 @@ This test suite specifies a set of integration tests, composed of transactions, 
 
 There are a few system managed variables, which updates dynamically as the tests run:
 
-- `PREMINED_ADDRESS`: the address with premined coins, for test purpose
-- `LAST_DEPLOYED_ADDRESS`: the address of the most recently deployed contract
+- `ADDRESS_PREMINED`: an address with premined coins, for test purpose
+- `ADDRESS_LAST_DEPLOYED`: address of the most recently deployed contract
+- `ADDRESS_RANDOM`: a random address
