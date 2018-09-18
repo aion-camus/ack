@@ -23,15 +23,15 @@ This test suite specifies a set of integration tests, composed of transactions, 
         "type": "Transaction type: CREATE or CALL",
         "from": "The address of the sender",
         "to": "The address of the receiver",
-        "value": "The value to send, default: 0x0",
+        "value": "The value to send, in decimal or hex, default: 0",
         "data": {
-          "raw": "Unstructured byte array in hexdecimal, default: EMPTY_BYTES",
-          "code": "Contract initialization code, default: EMPTY_BYTES",
-          "method": "Pre-hash method signature, default: EMPTY_BYTES",
-          "arguments": "Encoded arguments, default: EMPTY_BYTES"
+          "raw": "Unstructured byte array, in hex, default: EMPTY_BYTES",
+          "code": "Contract initialization code, in hex, default: EMPTY_BYTES",
+          "method": "Pre-hash method signature, in hex, default: EMPTY_BYTES",
+          "arguments": "Encoded arguments, in hex, default: EMPTY_BYTES"
         },
-        "nrg": "The energy limit, default: 0xf4240",
-        "nrgPrice": "The energy price, default: 0x1",
+        "nrg": "The energy limit, in decimal or hex, default: 1000000",
+        "nrgPrice": "The energy price, in decimal or hex, default: 1",
         "result": "The transaction result: SUCCESS, FAILED or REJECTED"
       }
     ]
