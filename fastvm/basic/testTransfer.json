@@ -1,0 +1,53 @@
+[
+  {
+    "name": "can transfer value",
+    "pipeline": [
+      {
+        "type": "CALL",
+        "from": "ADDRESS_PREMINED",
+        "to": "ADDRESS_RANDOM",
+        "value": "123",
+        "data": {
+          "raw": "0x"
+        },
+        "nrg": "21000",
+        "nrgPrice": "1",
+        "result": "SUCCESS"
+      }
+    ]
+  },
+  {
+    "name": "can transfer value and data",
+    "pipeline": [
+      {
+        "type": "CALL",
+        "from": "ADDRESS_PREMINED",
+        "to": "ADDRESS_RANDOM",
+        "value": "123",
+        "data": {
+          "raw": "0x11223344"
+        },
+        "nrg": "22000",
+        "nrgPrice": "1",
+        "result": "SUCCESS"
+      }
+    ]
+  },
+  {
+    "name": "can reject transfer due to large nrg",
+    "pipeline": [
+      {
+        "type": "CALL",
+        "from": "ADDRESS_PREMINED",
+        "to": "ADDRESS_RANDOM",
+        "value": "123",
+        "data": {
+          "raw": "0x"
+        },
+        "nrg": "10000000",
+        "nrgPrice": "1",
+        "result": "SUCCESS"
+      }
+    ]
+  }
+]
