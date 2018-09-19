@@ -1,52 +1,64 @@
 [
   {
-    "name": "can transfer value",
+    "name": "transfer_normal",
+    "description": "can transfer value",
     "pipeline": [
       {
-        "type": "CALL",
-        "from": "ADDRESS_PREMINED",
-        "to": "ADDRESS_RANDOM",
-        "value": "123",
-        "data": {
-          "raw": "0x"
+        "transaction": {
+          "type": "CALL",
+          "receiver": "${ADDRESS_RANDOM}",
+          "value": "123",
+          "data": {
+            "raw": "0x"
+          },
+          "nrg": "21000",
+          "nrgPrice": "1"
         },
-        "nrg": "21000",
-        "nrgPrice": "1",
-        "result": "SUCCESS"
+        "result": {
+          "status": "SUCCESS"
+        }
       }
     ]
   },
   {
-    "name": "can transfer value and data",
+    "name": "transfer_with_data",
+    "description": "can transfer value and data",
     "pipeline": [
       {
-        "type": "CALL",
-        "from": "ADDRESS_PREMINED",
-        "to": "ADDRESS_RANDOM",
-        "value": "123",
-        "data": {
-          "raw": "0x11223344"
+        "transaction": {
+          "type": "CALL",
+          "receiver": "${ADDRESS_RANDOM}",
+          "value": "123",
+          "data": {
+            "raw": "0x11223344"
+          },
+          "nrg": "22000",
+          "nrgPrice": "1"
         },
-        "nrg": "22000",
-        "nrgPrice": "1",
-        "result": "SUCCESS"
+        "result": {
+          "status": "SUCCESS"
+        }
       }
     ]
   },
   {
-    "name": "can reject transfer due to large nrg",
+    "name": "transfer_with_large_nrg",
+    "description": "can reject transfer due to large nrg",
     "pipeline": [
       {
-        "type": "CALL",
-        "from": "ADDRESS_PREMINED",
-        "to": "ADDRESS_RANDOM",
-        "value": "123",
-        "data": {
-          "raw": "0x"
+        "transaction": {
+          "type": "CALL",
+          "receiver": "${ADDRESS_RANDOM}",
+          "value": "123",
+          "data": {
+            "raw": "0x"
+          },
+          "nrg": "10000000",
+          "nrgPrice": "1"
         },
-        "nrg": "10000000",
-        "nrgPrice": "1",
-        "result": "SUCCESS"
+        "result": {
+          "status": "SUCCESS"
+        }
       }
     ]
   }
