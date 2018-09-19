@@ -47,7 +47,7 @@ For each category, there are a set of JSON files, each of which follows the sche
         },
         "result": {
           "status": "The transaction status: SUCCESS, FAILED or REJECTED",
-          "return_data": "The return data, default: 0x"
+          "returnData": "The return data, default: 0x"
         }
       }
     ]
@@ -71,6 +71,7 @@ For convenience, the following environment variables are pre-defined and can be 
 - `ADDRESS_LAST_DEPLOYED`: address of the last deployed contract, reset to zero at the beginning of a pipeline.
 - `ADDRESS_RANDOM`: a random address, generated each time being used.
 
+To use the pre-defined variables, use syntax `${VARIABLE_NAME}`
 
 ### Determinism analysis
 
