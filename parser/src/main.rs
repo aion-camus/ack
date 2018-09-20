@@ -1,4 +1,6 @@
+extern crate ethcore_transaction;
 extern crate ethereum_types;
+extern crate rand;
 extern crate rustc_hex;
 extern crate serde;
 #[macro_use]
@@ -20,7 +22,7 @@ struct Test {
 #[derive(Serialize, Deserialize, Debug)]
 struct Stage {
     transaction: Transaction,
-    result: Result
+    result: Result,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -72,7 +74,7 @@ fn main() {
                 &tx.data.raw,
                 &tx.data.code,
                 &tx.data.method,
-                &tx.data.arguments
+                &tx.data.arguments,
             );
             let nrg = parse_value(&tx.nrg.clone().unwrap_or_else(|| String::from("1000000")));
             let nrg_price = parse_value(&tx.nrg_price.clone().unwrap_or_else(|| String::from("1")));
@@ -95,7 +97,7 @@ fn main() {
 fn parse_address(address: &String) -> Address {
     match address.as_ref() {
         "${ADDRESS_LAST_DEPLOYED}" => Address::default(),
-        "${ADDRESS_RANDOM}" => Address::default(),
+        "${ADDRESS_RANDOM}" => random_address(),
         _ => {
             let bytes = parse_hex(address);
             Address::from_slice(bytes.as_ref())
@@ -113,22 +115,14 @@ fn parse_value(value: &String) -> U256 {
 }
 
 fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<String>, arguments: &Option<String>)
-    -> Vec<u8> {
+                 -> Vec<u8> {
     let mut assmebled: Vec<u8> = Vec::new();
 
     // concatenate: raw + code + method + arguments
-    if raw.is_some() {
-        assmebled.append(&mut parse_hex(&raw.clone().unwrap()));
-    }
-    if code.is_some() {
-        assmebled.append(&mut parse_hex(&code.clone().unwrap()));
-    }
-    if method.is_some() {
-        assmebled.append(&mut parse_hex(&method.clone().unwrap()));
-    }
-    if arguments.is_some() {
-        assmebled.append(&mut parse_hex(&arguments.clone().unwrap()));
-    }
+    assmebled.append(&mut parse_hex(&raw.clone().unwrap_or_default()));
+    assmebled.append(&mut parse_hex(&code.clone().unwrap_or_default()));
+    assmebled.append(&mut parse_hex(&method.clone().unwrap_or_default()));
+    assmebled.append(&mut parse_hex(&arguments.clone().unwrap_or_default()));
 
     assmebled
 }
@@ -140,4 +134,14 @@ fn parse_hex(hex: &String) -> Vec<u8> {
     } else {
         hex.from_hex::<Vec<u8>>().unwrap()
     }
+}
+
+fn random_address() -> Address {
+    let mut bytes = [0u8; 32];
+
+    for i in bytes.iter_mut() {
+        *i = rand::random::<u8>();
+    }
+
+    Address::from_slice(&bytes)
 }
