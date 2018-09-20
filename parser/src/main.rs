@@ -1,4 +1,4 @@
-extern crate ethcore_transaction;
+extern crate ethcore_transaction as transaction;
 extern crate ethereum_types;
 extern crate rand;
 extern crate rustc_hex;
@@ -9,8 +9,10 @@ extern crate serde_json;
 
 use ethereum_types::{Address, U256};
 use rustc_hex::FromHex;
+use std::env;
 use std::fs;
 use std::prelude::v1::Vec;
+use transaction::{Action, Transaction};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Test {
@@ -21,12 +23,12 @@ struct Test {
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Stage {
-    transaction: Transaction,
-    result: Result,
+    transaction: StageTransaction,
+    result: StageResult,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Transaction {
+struct StageTransaction {
     #[serde(rename = "type")]
     _type: String,
     receiver: String,
@@ -46,13 +48,23 @@ struct TransactionData {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Result {
+struct StageResult {
     status: String,
     #[serde(rename = "returnData")]
     return_data: Option<String>,
 }
 
+
 fn main() {
+    // read private_key and nonce from arguments
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 2 {
+        println!("Usage: ./ack-parser [PRIVATE_KEY] [NONCE]");
+        std::process::exit(1);
+    }
+    let pk = args[0].from_hex::<Vec<u8>>().unwrap();
+    let mut nonce = args[1].parse::<i32>().unwrap();
+
     // read the json file
     let json = fs::read_to_string("ack/fastvm/basic/testTransfer.json").unwrap();
 
@@ -64,20 +76,20 @@ fn main() {
         println!("description: {}", test.description);
 
         for stage in test.pipeline.iter() {
-            let tx = &stage.transaction;
-            let res = &stage.result;
+            let t = &stage.transaction;
+            let r = &stage.result;
 
-            let _type = &tx._type;
-            let receiver = parse_address(&tx.receiver);
-            let value = parse_value(&tx.value.clone().unwrap_or_else(|| String::from("0")));
+            let _type = &t._type;
+            let receiver = parse_address(&t.receiver);
+            let value = parse_value(&t.value.clone().unwrap_or_else(|| String::from("0")));
             let data = assemble_data(
-                &tx.data.raw,
-                &tx.data.code,
-                &tx.data.method,
-                &tx.data.arguments,
+                &t.data.raw,
+                &t.data.code,
+                &t.data.method,
+                &t.data.arguments,
             );
-            let nrg = parse_value(&tx.nrg.clone().unwrap_or_else(|| String::from("1000000")));
-            let nrg_price = parse_value(&tx.nrg_price.clone().unwrap_or_else(|| String::from("1")));
+            let nrg = parse_value(&t.nrg.clone().unwrap_or_else(|| String::from("1000000")));
+            let nrg_price = parse_value(&t.nrg_price.clone().unwrap_or_else(|| String::from("1")));
 
             println!("{{\n  type: {:?}", _type);
             println!("  receiver: {:?}", receiver);
@@ -86,10 +98,30 @@ fn main() {
             println!("  nrg: {:?}", nrg);
             println!("  nrgPrice: {:?}\n}}", nrg_price);
 
-            let status = &res.status;
-            let return_data = parse_hex(&res.return_data.clone().unwrap_or_default());
+            let status = &r.status;
+            let return_data = parse_hex(&r.return_data.clone().unwrap_or_default());
             println!("{{\n  status: {:?}", status);
             println!("  returnData: {:?}\n}}", return_data);
+
+            // assemble the transaction
+            let tx = Transaction::new(
+                U256::from(nonce),
+                nrg_price,
+                nrg,
+                match _type.as_ref() {
+                    "CREATE" => Action::Create,
+                    "CALL" => Action::Call(receiver),
+                    _ => panic!("Unexpected transaction type: {}", _type)
+                },
+                value,
+                data,
+            ).sign(pk.as_slice(), None);
+            println!("Assembled transaction: {:?}", tx);
+
+            // increase nonce if not rejected
+            if status != "REJECTED" {
+                nonce = nonce + 1;
+            }
         }
     }
 }
@@ -100,7 +132,7 @@ fn parse_address(address: &String) -> Address {
         "${ADDRESS_RANDOM}" => random_address(),
         _ => {
             let bytes = parse_hex(address);
-            Address::from_slice(bytes.as_ref())
+            return Address::from_slice(bytes.as_ref());
         }
     }
 }
@@ -108,9 +140,9 @@ fn parse_address(address: &String) -> Address {
 fn parse_value(value: &String) -> U256 {
     if value.starts_with("0x") {
         let sub_str = value.chars().skip(2).collect::<String>();
-        U256::from_dec_str(sub_str.as_ref()).unwrap()
+        return U256::from_dec_str(sub_str.as_ref()).unwrap();
     } else {
-        U256::from(value.parse::<i32>().unwrap())
+        return U256::from(value.parse::<i32>().unwrap());
     }
 }
 
@@ -124,15 +156,15 @@ fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<St
     assmebled.append(&mut parse_hex(&method.clone().unwrap_or_default()));
     assmebled.append(&mut parse_hex(&arguments.clone().unwrap_or_default()));
 
-    assmebled
+    return assmebled;
 }
 
 fn parse_hex(hex: &String) -> Vec<u8> {
     if hex.starts_with("0x") {
         let sub_str = hex.chars().skip(2).collect::<String>();
-        sub_str.from_hex::<Vec<u8>>().unwrap()
+        return sub_str.from_hex::<Vec<u8>>().unwrap();
     } else {
-        hex.from_hex::<Vec<u8>>().unwrap()
+        return hex.from_hex::<Vec<u8>>().unwrap();
     }
 }
 
@@ -143,5 +175,5 @@ fn random_address() -> Address {
         *i = rand::random::<u8>();
     }
 
-    Address::from_slice(&bytes)
+    return Address::from_slice(&bytes);
 }
