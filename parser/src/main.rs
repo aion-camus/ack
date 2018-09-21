@@ -18,52 +18,38 @@ use transaction::{Action, Transaction};
 struct Test {
     name: String,
     description: String,
-    pipeline: Vec<Stage>,
+    transactions: Vec<TestTransaction>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Stage {
-    transaction: StageTransaction,
-    result: StageResult,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct StageTransaction {
+struct TestTransaction {
     #[serde(rename = "type")]
     _type: String,
     receiver: String,
     value: Option<String>,
-    data: TransactionData,
+    data: TestTransactionData,
     nrg: Option<String>,
     #[serde(rename = "nrgPrice")]
     nrg_price: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TransactionData {
+struct TestTransactionData {
     raw: Option<String>,
     code: Option<String>,
     method: Option<String>,
     arguments: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct StageResult {
-    status: String,
-    #[serde(rename = "returnData")]
-    return_data: Option<String>,
-}
-
-
 fn main() {
     // read private_key and nonce from arguments
     let args: Vec<String> = env::args().collect();
-    if args.len() != 2 {
+    if args.len() != 3 {
         println!("Usage: ./ack-parser [PRIVATE_KEY] [NONCE]");
         std::process::exit(1);
     }
-    let pk = args[0].from_hex::<Vec<u8>>().unwrap();
-    let mut nonce = args[1].parse::<i32>().unwrap();
+    let pk = parse_hex(&args[1]);
+    let mut nonce = args[2].parse::<i32>().unwrap();
 
     // read the json file
     let json = fs::read_to_string("ack/fastvm/basic/testTransfer.json").unwrap();
@@ -75,10 +61,7 @@ fn main() {
         println!("\n\nname: {}", test.name);
         println!("description: {}", test.description);
 
-        for stage in test.pipeline.iter() {
-            let t = &stage.transaction;
-            let r = &stage.result;
-
+        for t in test.transactions.iter() {
             let _type = &t._type;
             let receiver = parse_address(&t.receiver);
             let value = parse_value(&t.value.clone().unwrap_or_else(|| String::from("0")));
@@ -98,11 +81,6 @@ fn main() {
             println!("  nrg: {:?}", nrg);
             println!("  nrgPrice: {:?}\n}}", nrg_price);
 
-            let status = &r.status;
-            let return_data = parse_hex(&r.return_data.clone().unwrap_or_default());
-            println!("{{\n  status: {:?}", status);
-            println!("  returnData: {:?}\n}}", return_data);
-
             // assemble the transaction
             let tx = Transaction::new(
                 U256::from(nonce),
@@ -118,10 +96,8 @@ fn main() {
             ).sign(pk.as_slice(), None);
             println!("Assembled transaction: {:?}", tx);
 
-            // increase nonce if not rejected
-            if status != "REJECTED" {
-                nonce = nonce + 1;
-            }
+            // increase nonce
+            nonce = nonce + 1;
         }
     }
 }

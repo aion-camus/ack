@@ -30,25 +30,19 @@ For each category, there are a set of JSON files, each of which follows the sche
   {
     "name": "An unique name to identify the test",
     "description": "A short description of the test",
-    "pipeline": [
+    "transactions": [
       {
-        "transaction": {
-          "type": "Transaction type: CREATE or CALL",
-          "receiver": "The receiver's address",
-          "value": "The value to send, in decimal or hex, default: 0",
-          "data": {
-            "raw": "Any unstructured byte array, in hex, default: 0x",
-            "code": "Contract initialization code, in hex, default: 0x",
-            "method": "Pre-hash method signature, in hex, default: 0x",
-            "arguments": "Encoded arguments, in hex, default: 0x"
-          },
-          "nrg": "The energy limit, in decimal or hex, default: 1000000",
-          "nrgPrice": "The energy price, in decimal or hex, default: 1"
+        "type": "Transaction type: CREATE or CALL",
+        "receiver": "The receiver's address",
+        "value": "The value to send, in decimal or hex, default: 0",
+        "data": {
+          "raw": "Any unstructured byte array, in hex, default: 0x",
+          "code": "Contract initialization code, in hex, default: 0x",
+          "method": "Pre-hash method signature, in hex, default: 0x",
+          "arguments": "Encoded arguments, in hex, default: 0x"
         },
-        "result": {
-          "status": "The transaction status: SUCCESS, FAILED or REJECTED",
-          "returnData": "The return data, default: 0x"
-        }
+        "nrg": "The energy limit, in decimal or hex, default: 1000000",
+        "nrgPrice": "The energy price, in decimal or hex, default: 1"
       }
     ]
   }
@@ -73,17 +67,19 @@ For convenience, the following environment variables are pre-defined and can be 
 
 To use the pre-defined variables, use syntax `${VARIABLE_NAME}`
 
-### Determinism analysis
+### Transaction result
 
-The result of a transaction is determined by many factor:
-- The block environment;
-- The transaction environment;
-- The pre-execution world state;
-- The code to execute.
+The transaction result can be affected by various factors, and most of them are not determinable at the time of writing the tests:
+- The block environment
+- The transaction environment
+- The pre-execution world state
+- The code to execute
 
+Transaction results are typically reflected on the following fields:
+- Account state (balance, nonce, code hash, storage root)
+- Transaction receipt (logs, energy usage)
 
-Extra caution may be required when writing up an integration test. Do not return data if the results depends on the environment variables; instead, use event/log to produce data which can be verified when importing the corresponding blocks.
-
+**Note** that the transaction return data is not hashed within the receipt and can not retrieved via web3. To check the return data of a method, use the event/log infrastructure in solidity.
 
 ### Convention
 
