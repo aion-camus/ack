@@ -1,13 +1,17 @@
+extern crate blake2b;
 extern crate ethcore_transaction as transaction;
 extern crate ethereum_types;
 extern crate rand;
+extern crate rlp;
 extern crate rustc_hex;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
 
+use blake2b::blake2b;
 use ethereum_types::{Address, U256};
+use rlp::{Encodable, RlpStream};
 use rustc_hex::FromHex;
 use std::env;
 use std::fs;
@@ -50,6 +54,7 @@ fn main() {
     }
     let pk = parse_hex(&args[1]);
     let mut nonce = args[2].parse::<i32>().unwrap();
+    let mut last_deployed;
 
     // read the json file
     let json = fs::read_to_string("ack/fastvm/basic/testTransfer.json").unwrap();
@@ -61,9 +66,12 @@ fn main() {
         println!("\n\nname: {}", test.name);
         println!("description: {}", test.description);
 
+        // reset last_deployed
+        last_deployed = Address::default();
+
         for t in test.transactions.iter() {
             let _type = &t._type;
-            let receiver = parse_address(&t.receiver);
+            let receiver = parse_address(&t.receiver, &last_deployed);
             let value = parse_value(&t.value.clone().unwrap_or_else(|| String::from("0")));
             let data = assemble_data(
                 &t.data.raw,
@@ -94,7 +102,24 @@ fn main() {
                 value,
                 data,
             ).sign(pk.as_slice(), None);
+            ;
             println!("Assembled transaction: {:?}", tx);
+
+            // rlp encoding
+            let encoded: Vec<u8> = tx.rlp_bytes().into_vec();
+            let hex = to_hex_string(encoded);
+            println!("{}", hex);
+
+            // update last_deployed if CREATE
+            if _type == "CREATE" {
+                let mut stream = RlpStream::new_list(2);
+                stream.append(&tx.sender());
+                stream.append(&U256::from(nonce));
+                let origin: [u8; 32] = blake2b(stream.as_raw()).into();
+                let mut buffer = [0xa0u8; 32];
+                &mut buffer[1..].copy_from_slice(&origin[1..]);
+                last_deployed = buffer.into();
+            }
 
             // increase nonce
             nonce = nonce + 1;
@@ -102,9 +127,9 @@ fn main() {
     }
 }
 
-fn parse_address(address: &String) -> Address {
+fn parse_address(address: &String, last_deployed: &Address) -> Address {
     match address.as_ref() {
-        "${ADDRESS_LAST_DEPLOYED}" => Address::default(),
+        "${ADDRESS_LAST_DEPLOYED}" => last_deployed.clone(),
         "${ADDRESS_RANDOM}" => random_address(),
         _ => {
             let bytes = parse_hex(address);
@@ -152,4 +177,11 @@ fn random_address() -> Address {
     }
 
     return Address::from_slice(&bytes);
+}
+
+pub fn to_hex_string(bytes: Vec<u8>) -> String {
+    let strs: Vec<String> = bytes.iter()
+        .map(|b| format!("{:02x}", b))
+        .collect();
+    return strs.join("");
 }
