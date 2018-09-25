@@ -8,12 +8,25 @@ var reader = require('readline').createInterface({
 });
 
 // parse the transactions and send them to the network
+var processed = 0;
 reader.on('line', function (line) {
-  console.log(line);
-  web3.eth.sendRawTransaction(line).then((receipt) => {
-    console.log(receipt);
-  }, (error) => {
-    console.error("Failed to send transaction: ", error);
-    process.exit(1);
+  web3.eth.sendRawTransaction(line, function(err, hash) {
+    if (err) {
+      console.error("Failed to send transaction: " + err);
+      process.exit(1);
+    }
+    var wait = 60000 + processed * 1000;
+    console.log("Tx hash: " + hash + ", wait for " + wait/1000 + " seconds");
+
+    setTimeout(() => {
+      var receipt = web3.eth.getTransactionReceipt(hash);
+      if (receipt) {
+        console.log(receipt);
+      } else {
+        console.error("Failed to retrieve the receipt for transaction: " + hash);
+      }
+    }, wait);
+
+    processed++;
   });
 });
