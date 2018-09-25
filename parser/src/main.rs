@@ -15,6 +15,7 @@ use rlp::{Encodable, RlpStream};
 use rustc_hex::FromHex;
 use std::env;
 use std::fs;
+use std::path::Path;
 use std::prelude::v1::Vec;
 use transaction::{Action, Transaction};
 
@@ -52,18 +53,50 @@ fn main() {
         println!("Usage: ./ack-parser [PRIVATE_KEY] [NONCE]");
         std::process::exit(1);
     }
-    let pk = parse_hex(&args[1]);
+    let private_key = parse_hex(&args[1]);
     let mut nonce = args[2].parse::<i32>().unwrap();
-    let mut last_deployed;
 
+    let dir: &Path = Path::new("ack/fastvm/basic");
+    let files = list_file(dir, ".json");
+    for file in files {
+        println!("================================================");
+        println!("{}", file);
+        println!("================================================");
+        nonce = process_file(file.as_str(), &private_key, nonce);
+    }
+}
+
+fn list_file(path: &Path, ext: &str) -> Vec<String> {
+    let mut result: Vec<String> = vec![];
+
+    if path.is_dir() {
+        for entry in fs::read_dir(path).unwrap() {
+            let path = entry.unwrap().path();
+            let mut temp = list_file(&path, ext);
+            result.append(&mut temp);
+        }
+    } else {
+        let path_str = String::from(path.to_str().unwrap());
+        if path_str.ends_with(ext) {
+            result.push(path_str);
+        }
+    }
+
+    return result;
+}
+
+fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
     // read the json file
-    let json = fs::read_to_string("ack/fastvm/basic/testTransfer.json").unwrap();
+    let json = fs::read_to_string(path).unwrap();
 
     // deserialize the JSON string
     let deserialized: Vec<Test> = serde_json::from_str(&json).unwrap();
 
+    let mut new_noce = nonce;
+    let mut last_deployed;
+
     for test in deserialized.iter() {
-        println!("\n\nname: {}", test.name);
+        println!("name: {}", test.name);
         println!("description: {}", test.description);
 
         // reset last_deployed
@@ -91,7 +124,7 @@ fn main() {
 
             // assemble the transaction
             let tx = Transaction::new(
-                U256::from(nonce),
+                U256::from(new_nonce),
                 nrg_price,
                 nrg,
                 match _type.as_ref() {
@@ -101,20 +134,19 @@ fn main() {
                 },
                 value,
                 data,
-            ).sign(pk.as_slice(), None);
-            ;
+            ).sign(private_key.as_slice(), None);
             println!("Assembled transaction: {:?}", tx);
 
             // rlp encoding
             let encoded: Vec<u8> = tx.rlp_bytes().into_vec();
             let hex = to_hex_string(encoded);
-            println!("{}", hex);
+            println!("{}\n", hex);
 
             // update last_deployed if CREATE
             if _type == "CREATE" {
                 let mut stream = RlpStream::new_list(2);
                 stream.append(&tx.sender());
-                stream.append(&U256::from(nonce));
+                stream.append(&U256::from(new_nonce));
                 let origin: [u8; 32] = blake2b(stream.as_raw()).into();
                 let mut buffer = [0xa0u8; 32];
                 &mut buffer[1..].copy_from_slice(&origin[1..]);
@@ -122,9 +154,11 @@ fn main() {
             }
 
             // increase nonce
-            nonce = nonce + 1;
+            new_noce = new_noce + 1;
         }
     }
+
+    return new_noce;
 }
 
 fn parse_address(address: &String, last_deployed: &Address) -> Address {
