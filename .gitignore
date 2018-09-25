@@ -1,3 +1,10 @@
+# rust
 target/
 *.lock
+
+# nodejs
+node_modules/
+package-lock.json
+
+# data
 transactions.txt
