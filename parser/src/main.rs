@@ -66,6 +66,9 @@ fn main() {
     }
 }
 
+/// Walk through the given path and return a list of files with the specified
+/// extension.
+///
 fn list_file(path: &Path, ext: &str) -> Vec<String> {
     let mut result: Vec<String> = vec![];
 
@@ -85,6 +88,11 @@ fn list_file(path: &Path, ext: &str) -> Vec<String> {
     return result;
 }
 
+/// Process a integration test file and generate corresponding transactions for
+/// future test. This method returns the afterward nonce of the account.
+///
+/// TODO: write the serialized transaction into a file
+///
 fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
     // read the json file
     let json = fs::read_to_string(path).unwrap();
@@ -161,6 +169,12 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
     return new_noce;
 }
 
+/// Parse an AION address from string. It can with a hex string with/out the 0x prefix.
+///
+/// Pre-defined variables are also supported:
+/// - `ADDRESS_LAST_DEPLOYED`
+/// - `ADDRESS_RANDOM`
+///
 fn parse_address(address: &String, last_deployed: &Address) -> Address {
     match address.as_ref() {
         "${ADDRESS_LAST_DEPLOYED}" => last_deployed.clone(),
@@ -172,6 +186,9 @@ fn parse_address(address: &String, last_deployed: &Address) -> Address {
     }
 }
 
+/// Parse an unsigned 256-bit integer from a string. Note that it should be 128-bit integers
+/// to comply with FastVM's specification.
+///
 fn parse_value(value: &String) -> U256 {
     if value.starts_with("0x") {
         let sub_str = value.chars().skip(2).collect::<String>();
@@ -181,6 +198,10 @@ fn parse_value(value: &String) -> U256 {
     }
 }
 
+/// Assemble the raw data of transaction, using the following formula:
+///
+/// `data = raw + code + method + arguments`
+///
 fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<String>, arguments: &Option<String>)
                  -> Vec<u8> {
     let mut assmebled: Vec<u8> = Vec::new();
@@ -194,6 +215,8 @@ fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<St
     return assmebled;
 }
 
+/// Parse an hex string into byte array. The input string can be with/out the `0x` prefix
+///
 fn parse_hex(hex: &String) -> Vec<u8> {
     if hex.starts_with("0x") {
         let sub_str = hex.chars().skip(2).collect::<String>();
@@ -203,6 +226,8 @@ fn parse_hex(hex: &String) -> Vec<u8> {
     }
 }
 
+/// Generate a random address.
+///
 fn random_address() -> Address {
     let mut bytes = [0u8; 32];
 
@@ -213,6 +238,8 @@ fn random_address() -> Address {
     return Address::from_slice(&bytes);
 }
 
+/// Convert an u8 vector into it's hex representation.
+///
 pub fn to_hex_string(bytes: Vec<u8>) -> String {
     let strs: Vec<String> = bytes.iter()
         .map(|b| format!("{:02x}", b))
