@@ -62,6 +62,7 @@ fn main() {
     let mut output = OpenOptions::new()
         .write(true)
         .create(true)
+        .truncate(true)
         .open("../transactions.txt")
         .unwrap();
 
