@@ -58,13 +58,15 @@ fn main() {
     let private_key = parse_hex(&args[1]);
     let mut nonce = args[2].parse::<i32>().unwrap();
 
+    // output file
     let mut output = OpenOptions::new()
         .write(true)
         .create(true)
-        .open("transactions.txt")
+        .open("ack/transactions.txt")
         .unwrap();
 
-    let dir: &Path = Path::new("ack/fastvm/basic");
+    // parse all the JSON files
+    let dir: &Path = Path::new("ack/fastvm");
     let files = list_file(dir, ".json");
     for file in files {
         println!("================================================");

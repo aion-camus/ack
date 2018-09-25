@@ -1,2 +1,3 @@
 target/
 *.lock
+transactions.txt
