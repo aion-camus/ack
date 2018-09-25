@@ -14,7 +14,9 @@ use ethereum_types::{Address, U256};
 use rlp::{Encodable, RlpStream};
 use rustc_hex::FromHex;
 use std::env;
-use std::fs;
+use std::fs::{self, File};
+use std::fs::OpenOptions;
+use std::io::Write;
 use std::path::Path;
 use std::prelude::v1::Vec;
 use transaction::{Action, Transaction};
@@ -56,13 +58,19 @@ fn main() {
     let private_key = parse_hex(&args[1]);
     let mut nonce = args[2].parse::<i32>().unwrap();
 
+    let mut output = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("transactions.txt")
+        .unwrap();
+
     let dir: &Path = Path::new("ack/fastvm/basic");
     let files = list_file(dir, ".json");
     for file in files {
         println!("================================================");
         println!("{}", file);
         println!("================================================");
-        nonce = process_file(file.as_str(), &private_key, nonce);
+        nonce = process_file(file.as_str(), &private_key, nonce, &mut output);
     }
 }
 
@@ -91,16 +99,14 @@ fn list_file(path: &Path, ext: &str) -> Vec<String> {
 /// Process a integration test file and generate corresponding transactions for
 /// future test. This method returns the afterward nonce of the account.
 ///
-/// TODO: write the serialized transaction into a file
-///
-fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
+fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32, output: &mut File) -> i32 {
     // read the json file
     let json = fs::read_to_string(path).unwrap();
 
     // deserialize the JSON string
     let deserialized: Vec<Test> = serde_json::from_str(&json).unwrap();
 
-    let mut new_noce = nonce;
+    let mut new_nonce = nonce;
     let mut last_deployed;
 
     for test in deserialized.iter() {
@@ -143,12 +149,13 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
                 value,
                 data,
             ).sign(private_key.as_slice(), None);
-            println!("Assembled transaction: {:?}", tx);
+            println!("{:?}\n", tx);
 
             // rlp encoding
             let encoded: Vec<u8> = tx.rlp_bytes().into_vec();
             let hex = to_hex_string(encoded);
-            println!("{}\n", hex);
+            output.write(hex.as_ref()).unwrap();
+            output.write(b"\n").unwrap();
 
             // update last_deployed if CREATE
             if _type == "CREATE" {
@@ -162,11 +169,11 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32) -> i32 {
             }
 
             // increase nonce
-            new_noce = new_noce + 1;
+            new_nonce = new_nonce + 1;
         }
     }
 
-    return new_noce;
+    return new_nonce;
 }
 
 /// Parse an AION address from string. It can with a hex string with/out the 0x prefix.
