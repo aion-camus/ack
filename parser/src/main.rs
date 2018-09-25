@@ -62,11 +62,11 @@ fn main() {
     let mut output = OpenOptions::new()
         .write(true)
         .create(true)
-        .open("ack/transactions.txt")
+        .open("../transactions.txt")
         .unwrap();
 
     // parse all the JSON files
-    let dir: &Path = Path::new("ack/fastvm");
+    let dir: &Path = Path::new("../fastvm");
     let files = list_file(dir, ".json");
     for file in files {
         println!("================================================");
