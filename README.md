@@ -62,7 +62,7 @@ data = raw + code + method + arguments
 
 For convenience, the following environment variables are pre-defined and can be referred in the JSON file.
 
-- `ADDRESS_LAST_DEPLOYED`: address of the last deployed contract, reset to zero at the beginning of a pipeline.
+- `ADDRESS_LAST_DEPLOYED`: address of the last deployed contract, reset to zero where a new test starts.
 - `ADDRESS_RANDOM`: a random address, generated each time being used.
 
 To use the pre-defined variables, use syntax `${VARIABLE_NAME}`

@@ -16,8 +16,8 @@
     ]
   },
   {
-    "name": "prepare_sink_contract",
-    "description": "prepare the Sink smart contract",
+    "name": "call_sink",
+    "description": "can call the Sink smart contract",
     "transactions": [
       {
         "type": "CREATE",
@@ -28,13 +28,7 @@
         },
         "nrg": "1000000",
         "nrgPrice": "1"
-      }
-    ]
-  },
-  {
-    "name": "call_sink",
-    "description": "can call the deployed Sink smart contract",
-    "transactions": [
+      },
       {
         "type": "CALL",
         "receiver": "${ADDRESS_LAST_DEPLOYED}",

@@ -1,7 +1,7 @@
 [
   {
-    "name": "prepare_multipurpose_contract",
-    "description": "prepare the MultiPurpose smart contract",
+    "name": "call_log_loop",
+    "description": "can call the LOG loop",
     "transactions": [
       {
         "type": "CREATE",
@@ -12,13 +12,7 @@
         },
         "nrg": "1000000",
         "nrgPrice": "1"
-      }
-    ]
-  },
-  {
-    "name": "call_log_loop",
-    "description": "can call the LOG loop",
-    "transactions": [
+      },
       {
         "type": "CALL",
         "receiver": "${ADDRESS_LAST_DEPLOYED}",
@@ -26,6 +20,17 @@
         "data": {
           "method": "logLoop(uint128)",
           "arguments": "0x00000000000000000000000000000005"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "123",
+        "data": {
+          "method": "logLoop(uint128)",
+          "arguments": "0x0000000000000000000000000000ffff"
         },
         "nrg": "1000000",
         "nrgPrice": "1"
@@ -37,12 +42,33 @@
     "description": "can call the SSTORE loop",
     "transactions": [
       {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "605060405234156100105760006000fd5b610015565b610165806100246000396000f30060506040526000356c01000000000000000000000000900463ffffffff168063388b01581461003e57806398f220251461006257610038565b60006000fd5b341561004a5760006000fd5b6100606004808035906010019091905050610086565b005b341561006e5760006000fd5b6100846004808035906010019091905050610103565b005b6000600090505b818110156100fe577fafabcf2dd47e06a477a89e49c03f8ebe8e0a7e94f775b25bbb24227c9d0110b26040518080601001828103825260068152601001806f3078313132320000000000000000000081526010015060100191505060405180910390a15b808060010191505061008d565b5b5050565b6000600090505b818110156101345760016000600050540160006000508190909055505b808060010191505061010a565b5b50505600a165627a7a72305820ee06080a9415798e54ce064c4615114b0454696c004d83c1d1b278035f12a5cc0029"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
         "type": "CALL",
         "receiver": "${ADDRESS_LAST_DEPLOYED}",
         "value": "123",
         "data": {
           "method": "ssetLoop(uint128)",
           "arguments": "0x00000000000000000000000000000005"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "123",
+        "data": {
+          "method": "ssetLoop(uint128)",
+          "arguments": "0x0000000000000000000000000000ffff"
         },
         "nrg": "1000000",
         "nrgPrice": "1"
