@@ -8,6 +8,7 @@ ethcore-transaction = { path = "../../ethcore/transaction" }
 ethereum-types = { path = "../../external/ethereum-types" }
 ethcore-bytes = { path = "../../util/bytes" }
 blake2b = { path = "../../util/blake2b" }
+crypto = { path = "../../util/crypto" }
 rlp = { path = "../../util/rlp" }
 serde = "1.0"
 serde_json = "1.0"

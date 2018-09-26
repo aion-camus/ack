@@ -1,4 +1,5 @@
 extern crate blake2b;
+extern crate crypto;
 extern crate ethcore_transaction as transaction;
 extern crate ethereum_types;
 extern crate rand;
@@ -13,6 +14,8 @@ use blake2b::blake2b;
 use ethereum_types::{Address, U256};
 use rlp::{Encodable, RlpStream};
 use rustc_hex::FromHex;
+use self::crypto::digest::Digest;
+use self::crypto::sha3::Sha3;
 use std::env;
 use std::fs::{self, File};
 use std::fs::OpenOptions;
@@ -110,14 +113,11 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32, output: &mut File
     let deserialized: Vec<Test> = serde_json::from_str(&json).unwrap();
 
     let mut new_nonce = nonce;
-    let mut last_deployed;
+    let mut last_deployed = Address::default();
 
     for test in deserialized.iter() {
         println!("name: {}", test.name);
         println!("description: {}", test.description);
-
-        // reset last_deployed
-        last_deployed = Address::default();
 
         for t in test.transactions.iter() {
             let _type = &t._type;
@@ -210,16 +210,22 @@ fn parse_value(value: &String) -> U256 {
 
 /// Assemble the raw data of transaction, using the following formula:
 ///
-/// `data = raw + code + method + arguments`
+/// `data = raw + code + bytes4(keccak256(method)) + arguments`
 ///
 fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<String>, arguments: &Option<String>)
                  -> Vec<u8> {
     let mut assmebled: Vec<u8> = Vec::new();
 
-    // concatenate: raw + code + method + arguments
     assmebled.append(&mut parse_hex(&raw.clone().unwrap_or_default()));
     assmebled.append(&mut parse_hex(&code.clone().unwrap_or_default()));
-    assmebled.append(&mut parse_hex(&method.clone().unwrap_or_default()));
+    if method.is_some() {
+        let mut hash = [0u8; 32];
+        let mut hasher = Sha3::keccak256();
+        hasher.input_str(method.clone().unwrap_or_default().as_str());
+        hasher.result(&mut hash);
+
+        assmebled.append(&mut hash[0..4].to_vec());
+    }
     assmebled.append(&mut parse_hex(&arguments.clone().unwrap_or_default()));
 
     return assmebled;
