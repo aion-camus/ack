@@ -1,0 +1,50 @@
+[
+  {
+    "name": "call_nobody",
+    "description": "can call a non-existing account",
+    "transactions": [
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_RANDOM}",
+        "value": "123",
+        "data": {
+          "code": "0x11223344"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "prepare_sink_contract",
+    "description": "prepare the Sink smart contract",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "0x605060405234156100105760006000fd5b610015565b608f806100236000396000f30060506040523615600d57600d565b5b7fafabcf2dd47e06a477a89e49c03f8ebe8e0a7e94f775b25bbb24227c9d0110b2600036604051808060100182810382528484828181526010019250808284378201915050935050505060405180910390a15b0000a165627a7a723058204170c8bd62c27cff685208da00e0b8aecde86ef7e3849f516eb955913a24088d0029"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "call_sink",
+    "description": "can call the deployed Sink smart contract",
+    "transactions": [
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "123",
+        "data": {
+          "raw": "0x11223344"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  }
+]
