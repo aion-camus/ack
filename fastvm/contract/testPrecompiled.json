@@ -1,7 +1,7 @@
 [
   {
     "name": "call_network_balance_query",
-    "description": "can call the network balance pre-compiled contract",
+    "description": "can call the NetworkBalance contract: query",
     "transactions": [
       {
         "type": "CALL",
@@ -17,7 +17,7 @@
   },
   {
     "name": "call_network_balance_query_with_value",
-    "description": "can call the network balance pre-compiled contract with value",
+    "description": "can call the NetworkBalance contract: query with value",
     "transactions": [
       {
         "type": "CALL",
@@ -33,7 +33,7 @@
   },
   {
     "name": "call_network_balance_update_random_data",
-    "description": "can call the network balance pre-compiled contract",
+    "description": "can call the NetworkBalance contract: update with random signature",
     "transactions": [
       {
         "type": "CALL",

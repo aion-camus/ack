@@ -2,7 +2,7 @@
 
 Aion Compatibility Kit (ACK) is an extensive test suite to ensure compatibility between different Aion implementations. Ideally, it should be a centralized place to check all major components and protocols:
 - Chain specifications
-- Virtal machine
+- Virtual machine
 - P2P protocol
 
 ## Aion FastVM
@@ -34,15 +34,15 @@ For each category, there are a set of JSON files, each of which follows the sche
       {
         "type": "Transaction type: CREATE or CALL",
         "receiver": "The receiver's address",
-        "value": "The value to send, in decimal or hex, default: 0",
+        "value": "(optional) The value to send, in decimal or hex, default: 0",
         "data": {
-          "raw": "Any unstructured byte array, in hex, default: 0x",
-          "code": "Contract initialization code, in hex, default: 0x",
-          "method": "Pre-hash method signature, in hex, default: 0x",
-          "arguments": "Encoded arguments, in hex, default: 0x"
+          "raw": "(optional) Any unstructured byte array, in hex",
+          "code": "(optional) Contract initialization code, in hex",
+          "method": "(optional) The method signature before hashing",
+          "arguments": "(optional) Encoded arguments, in hex"
         },
-        "nrg": "The energy limit, in decimal or hex, default: 1000000",
-        "nrgPrice": "The energy price, in decimal or hex, default: 1"
+        "nrg": "(optional) The energy limit, in decimal or hex, default: 1000000",
+        "nrgPrice": "(optional) The energy price, in decimal or hex, default: 1"
       }
     ]
   }
