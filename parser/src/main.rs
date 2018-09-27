@@ -250,8 +250,9 @@ fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<St
 
 /// Compile a solidity source code
 fn compile_code(file: &String) -> Vec<u8> {
-    let output = Command::new("/home/yulong/solidity_v0.3.1/solc")
-        .env("LD_LIBRARY_PATH", "/home/yulong/solidity_v0.3.1")
+    let solc_home = env::var("SOLC_HOME").unwrap_or_default();
+    let output = Command::new("solc")
+        .env("LD_LIBRARY_PATH", solc_home)
         .arg("--combined-json")
         .arg("bin")
         .arg(file)
