@@ -22,6 +22,7 @@ use std::fs::OpenOptions;
 use std::io::Write;
 use std::path::Path;
 use std::prelude::v1::Vec;
+use std::process::Command;
 use transaction::{Action, Transaction};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -128,6 +129,7 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32, output: &mut File
                 &t.data.code,
                 &t.data.method,
                 &t.data.arguments,
+                path,
             );
             let nrg = parse_value(&t.nrg.clone().unwrap_or_else(|| String::from("1000000")));
             let nrg_price = parse_value(&t.nrg_price.clone().unwrap_or_else(|| String::from("1")));
@@ -210,14 +212,29 @@ fn parse_value(value: &String) -> U256 {
 
 /// Assemble the raw data of transaction, using the following formula:
 ///
-/// `data = raw + code + bytes4(keccak256(method)) + arguments`
+/// `data = raw + compile(code) + bytes4(keccak256(method)) + arguments`
 ///
-fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<String>, arguments: &Option<String>)
+fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<String>, arguments: &Option<String>, path: &str)
                  -> Vec<u8> {
     let mut assmebled: Vec<u8> = Vec::new();
 
     assmebled.append(&mut parse_hex(&raw.clone().unwrap_or_default()));
-    assmebled.append(&mut parse_hex(&code.clone().unwrap_or_default()));
+    if code.is_some() {
+        let code = code.clone().unwrap_or_default();
+        let mut file = String::new();
+        if code.starts_with("@") {
+            file.push_str(&path[0..path.len() - 5]);
+            file.push_str("/");
+            file.push_str(&code[1..code.len()]);
+        } else {
+            let temp_file = "/tmp/contract.sol";
+            file.push_str(temp_file);
+
+            let mut buffer = File::create(temp_file).unwrap();
+            buffer.write(code.as_bytes()).unwrap();
+        }
+        assmebled.append(&mut compile_code(&file));
+    }
     if method.is_some() {
         let mut hash = [0u8; 32];
         let mut hasher = Sha3::keccak256();
@@ -229,6 +246,27 @@ fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<St
     assmebled.append(&mut parse_hex(&arguments.clone().unwrap_or_default()));
 
     return assmebled;
+}
+
+/// Compile a solidity source code
+fn compile_code(file: &String) -> Vec<u8> {
+    let output = Command::new("/home/yulong/solidity_v0.3.1/solc")
+        .env("LD_LIBRARY_PATH", "/home/yulong/solidity_v0.3.1")
+        .arg("--combined-json")
+        .arg("bin")
+        .arg(file)
+        .output()
+        .expect("solc failed to start");
+
+    if output.status.code().unwrap() == 0 {
+        let bin = String::from_utf8_lossy(&output.stdout);
+        let start = bin.find("\"bin\":\"").unwrap();
+        let end = bin[start + 7..].find("\"").unwrap();
+        let b = &bin[start + 7..start + 7 + end];
+        return b.from_hex::<Vec<u8>>().unwrap();
+    }
+
+    panic!("Failed to compile: {}", file);
 }
 
 /// Parse an hex string into byte array. The input string can be with/out the `0x` prefix

@@ -8,7 +8,7 @@
         "receiver": "",
         "value": "0",
         "data": {
-          "code": "0x"
+          "raw": "0x"
         },
         "nrg": "1000000",
         "nrgPrice": "1"

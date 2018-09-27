@@ -37,7 +37,7 @@ For each category, there are a set of JSON files, each of which follows the sche
         "value": "(optional) The value to send, in decimal or hex, default: 0",
         "data": {
           "raw": "(optional) Any unstructured byte array, in hex",
-          "code": "(optional) Contract initialization code, in hex",
+          "code": "(optional) Solidity source code, @file",
           "method": "(optional) The method signature before hashing",
           "arguments": "(optional) Encoded arguments, in hex"
         },
