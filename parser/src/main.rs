@@ -223,8 +223,8 @@ fn assemble_data(raw: &Option<String>, code: &Option<String>, method: &Option<St
         let code = code.clone().unwrap_or_default();
         let mut file = String::new();
         if code.starts_with("@") {
-            file.push_str(&path[0..path.len() - 5]);
-            file.push_str("/");
+            let idx = path.rfind("/").unwrap();
+            file.push_str(&path[0..idx + 1]);
             file.push_str(&code[1..code.len()]);
         } else {
             let temp_file = "/tmp/contract.sol";
