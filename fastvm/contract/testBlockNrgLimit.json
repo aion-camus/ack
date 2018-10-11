@@ -18,8 +18,7 @@
         "receiver": "${ADDRESS_LAST_DEPLOYED}",
         "value": "0",
         "data": {
-          "method": "send(uint128)",
-          "arguments": "0x00000000000000000000000000002710"
+          "method": "refundAll()"
         },
         "nrg": "1000000",
         "nrgPrice": "1"
@@ -29,10 +28,9 @@
         "receiver": "${ADDRESS_LAST_DEPLOYED}",
         "value": "0",
         "data": {
-          "method": "send(uint128)",
-          "arguments": "0x00000000000000000000000000002710"
+          "method": "refundAll()"
         },
-        "nrg": "1000000",
+        "nrg": "30000",
         "nrgPrice": "1"
       },
       {
@@ -40,10 +38,9 @@
         "receiver": "${ADDRESS_LAST_DEPLOYED}",
         "value": "0",
         "data": {
-          "method": "send(uint128)",
-          "arguments": "0x00000000000000000000000000000195"
+          "method": "refundAll()"
         },
-        "nrg": "1000000",
+        "nrg": "200000",
         "nrgPrice": "1"
       }
     ]
