@@ -1,6 +1,65 @@
 [
+
   {
-    "name": "call_log_loop",
+    "name": "loop_sstore_instruction",
+    "description": "can run out of nrg because of SSTORE loop",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "60005b8060010190508060339055600256"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "loop_log_instruction",
+    "description": "can run out of nrg because of LOG loop",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "5b632fffffff6000a0600056"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "loop_sha3_instruction",
+    "description": "can run out of nrg because of SHA3 loop",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "5b632fffffff60002050600056"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "6f0000000000000000000000003FFFFFFF6f0000000000000000000000000000000020"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "loop_log",
     "description": "can call the LOG loop",
     "transactions": [
       {
@@ -38,7 +97,7 @@
     ]
   },
   {
-    "name": "call_sstore_loop",
+    "name": "loop_sstore",
     "description": "can call the SSTORE loop",
     "transactions": [
       {

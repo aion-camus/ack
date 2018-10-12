@@ -108,5 +108,37 @@
         "nrgPrice": "1"
       }
     ]
+  },
+  {
+    "name": "inst_create_short",
+    "description": "can deploy the Short smart contract",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@Short.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "inst_create_long",
+    "description": "can deploy the Long smart contract",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@Long.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
   }
 ]
