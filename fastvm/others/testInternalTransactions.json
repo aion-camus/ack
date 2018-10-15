@@ -1,0 +1,138 @@
+[
+  {
+    "name": "emit_logs_in_callee",
+    "description": "can emit logs in the callee function",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@InternalLogs.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(uint128)",
+          "arguments": "0x000000000000000000000000000000ff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(uint128)",
+          "arguments": "0x0000000000000000000000000000ffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(uint128)",
+          "arguments": "0x00000000000000000000000000ffffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(uint128)",
+          "arguments": "0x000000000000000000000000ffffffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "call_self_recursively",
+    "description": "can call myself recursively",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@RecursiveCall.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(int128)",
+          "arguments": "0x000000000000000000000000000000ff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(int128)",
+          "arguments": "0x0000000000000000000000000000ffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(int128)",
+          "arguments": "0x00000000000000000000000000ffffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f(int128)",
+          "arguments": "0x000000000000000000000000ffffffff"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "create_contracts_on_the_fly",
+    "description": "can create a new contract when initializing this contract",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "0x60506040523415600f5760006000fd5b5b60166048565b604051809103906000f0801582151615602f5760006000fd5b60006000508282909180600101839055555050505b6057565b604051605a8061009f83390190565b603a806100656000396000f30060506040526008565b60006000fd00a165627a7a72305820c0eea40d4778b01848164e58898e9e8c8ab068ed5ee36ed6f0582d119ecbbede002960506040523415600f5760006000fd5b6013565b603a8060206000396000f30060506040526008565b60006000fd00a165627a7a723058208c13bc92baf844f8574632dca44c49776516cb6cd537b10ed700bf61392b6ae80029"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  }
+]
