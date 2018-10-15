@@ -1,1 +1,48 @@
-[]
+[
+  {
+    "name": "can_do_bitwise_logic_ops",
+    "description": "can do bitwise logic operations",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@BitwiseLogic.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "unsigned()"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "signed()"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "combo()"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  }
+]

@@ -11,7 +11,7 @@ contract Test {
         result.push(a * b);
         result.push(a / b);
         result.push(a % b);
-        result.push(a ^ b);
+        result.push(a ** b);
     }
 
     int c = 0x567123467891237689439;

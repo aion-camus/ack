@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "name": "can_do_sha3",
+    "description": "can do SHA3 operations",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@SHA3.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "f()"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  }
+]
