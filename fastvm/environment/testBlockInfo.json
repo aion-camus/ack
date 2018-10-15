@@ -1,0 +1,18 @@
+[
+  {
+    "name": "can_do_arithmetic_ops",
+    "description": "can do arithmetic operations",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "code": "@BlockInfo.sol"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  }
+]
