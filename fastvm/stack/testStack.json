@@ -1,0 +1,50 @@
+[
+  {
+    "name": "stack_push",
+    "description": "can push items to stack",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "7f000000000000000000000000000000010000000000000000000000000000000255"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "stack_pop",
+    "description": "can pop items from stack",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "7f00000000000000000000000000000001000000000000000000000000000000028055"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+  {
+    "name": "stack_swap",
+    "description": "can swap items in stack",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "7f00000000000000000000000000000001000000000000000000000000000000029055"
+        },
+        "nrg": "1000000",
+        "nrgPrice": "1"
+      }
+    ]
+  },
+]
