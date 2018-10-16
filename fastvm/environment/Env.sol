@@ -11,7 +11,7 @@ contract Test {
     uint[] result;
     function calldata() {
         result.push(msg.data.length);
-        result.push(uint256(msg.data[0]));
+        result.push(uint(msg.data[0]));
     }
 
     // CODESIZE, CODECOPY, EXTCODESIZE, EXTCODECOPY are not tested
