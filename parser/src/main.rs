@@ -55,8 +55,8 @@ struct TestTransactionData {
 fn main() {
     // read private_key and nonce from arguments
     let args: Vec<String> = env::args().collect();
-    if args.len() != 3 {
-        println!("Usage: ./ack-parser [PRIVATE_KEY] [NONCE]");
+    if args.len() != 5 {
+        println!("Usage: ./ack-parser [PRIVATE_KEY] [NONCE] [SRC_FOLDER] [DEST_FILE]");
         std::process::exit(1);
     }
     let private_key = parse_hex(&args[1]);
@@ -67,11 +67,11 @@ fn main() {
         .write(true)
         .create(true)
         .truncate(true)
-        .open("../transactions.txt")
+        .open(args[4].as_str())
         .unwrap();
 
     // parse all the JSON files
-    let dir: &Path = Path::new("../fastvm");
+    let dir: &Path = Path::new(args[3].as_str());
     let files = list_file(dir, ".json");
     for file in files {
         println!("================================================");

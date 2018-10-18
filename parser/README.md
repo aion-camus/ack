@@ -6,7 +6,7 @@ The ACK parser analyze the ACK json specification files and generates a set of s
 ## Usage
 
 ```
-cargo run -- [PRIVATE_KEY] [START_NONCE]
+cargo run -- [PRIVATE_KEY] [START_NONCE] [SRC_FOLDER] [DEST_FILE]
 ```
 
 *Note: you have to put the `ack` project under the `aion_rust` project.*
