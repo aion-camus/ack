@@ -42,7 +42,7 @@ For each category, there are a set of JSON files, each of which follows the sche
           "arguments": "(optional) Encoded arguments, in hex"
         },
         "nrg": "(optional) The energy limit, in decimal or hex, default: 1000000",
-        "nrgPrice": "(optional) The energy price, in decimal or hex, default: 1"
+        "nrgPrice": "(optional) The energy price, in decimal or hex, default: 10000000000"
       }
     ]
   }

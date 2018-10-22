@@ -10,8 +10,7 @@
         "data": {
           "code": "@BlockNrgLimit.sol"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -20,8 +19,7 @@
         "data": {
           "method": "refundAll()"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -30,8 +28,7 @@
         "data": {
           "method": "refundAll()"
         },
-        "nrg": "30000",
-        "nrgPrice": "1"
+        "nrg": "30000"
       },
       {
         "type": "CALL",
@@ -40,8 +37,7 @@
         "data": {
           "method": "refundAll()"
         },
-        "nrg": "200000",
-        "nrgPrice": "1"
+        "nrg": "200000"
       }
     ]
   }

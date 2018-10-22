@@ -10,8 +10,7 @@
         "data": {
           "code": "@CallTypes.sol"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -21,8 +20,7 @@
           "method": "callSetN(uint128)",
           "arguments": "00000000000000000000000000000001"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -32,8 +30,7 @@
           "method": "callcodeSetN(uint128)",
           "arguments": "00000000000000000000000000000002"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -43,8 +40,7 @@
           "method": "delegatecallSetN(uint128)",
           "arguments": "00000000000000000000000000000003"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       }
     ]
   }

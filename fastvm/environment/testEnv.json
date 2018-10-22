@@ -10,8 +10,7 @@
         "data": {
           "code": "@Env.sol"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -20,8 +19,7 @@
         "data": {
           "method": "calldata()"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       }
     ]
   }

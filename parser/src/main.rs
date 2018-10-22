@@ -132,7 +132,7 @@ fn process_file(path: &str, private_key: &Vec<u8>, nonce: i32, output: &mut File
                 path,
             );
             let nrg = parse_value(&t.nrg.clone().unwrap_or_else(|| String::from("1000000")));
-            let nrg_price = parse_value(&t.nrg_price.clone().unwrap_or_else(|| String::from("1")));
+            let nrg_price = parse_value(&t.nrg_price.clone().unwrap_or_else(|| String::from("10000000000")));
 
             println!("{{\n  type: {:?}", _type);
             println!("  receiver: {:?}", receiver);
@@ -206,7 +206,7 @@ fn parse_value(value: &String) -> U256 {
         let sub_str = value.chars().skip(2).collect::<String>();
         return U256::from_dec_str(sub_str.as_ref()).unwrap();
     } else {
-        return U256::from(value.parse::<i32>().unwrap());
+        return U256::from(value.parse::<i64>().unwrap());
     }
 }
 

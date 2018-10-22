@@ -10,8 +10,7 @@
         "data": {
           "code": "@DynamicArray.sol"
         },
-        "nrg": "1000000",
-        "nrgPrice": "1"
+        "nrg": "1000000"
       },
       {
         "type": "CALL",
@@ -21,8 +20,7 @@
           "method": "createAndAccess(uint128)",
           "arguments": "0x00000000000000000000000000000005"
         },
-        "nrg": "100000",
-        "nrgPrice": "1"
+        "nrg": "100000"
       },
       {
         "type": "CALL",
@@ -32,8 +30,7 @@
           "method": "createAndAccess(uint128)",
           "arguments": "0x000000000000000000000000000000ff"
         },
-        "nrg": "100000",
-        "nrgPrice": "1"
+        "nrg": "100000"
       },
       {
         "type": "CALL",
@@ -43,8 +40,7 @@
           "method": "createAndAccess(uint128)",
           "arguments": "0x000000000000000000000000ffffffff"
         },
-        "nrg": "100000",
-        "nrgPrice": "1"
+        "nrg": "100000"
       }
     ]
   }
