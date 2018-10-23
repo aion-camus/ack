@@ -2,28 +2,31 @@ var Web3 = require('aion-web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var fs = require("fs");
 
+var it;
+
 function handler(lines, current) {
-    console.log("Current raw tx: " + lines[current]);
+    console.log("\n\nCurrent raw transaction: " + lines[current]);
 
     web3.eth.sendRawTransaction(lines[current], function(err, hash) {
         if (err) {
             console.error("Failed to send transaction: " + err);
             process.exit(1);
         }
-        var wait = 10000;
-        console.log("Tx hash: " + hash + ", wait for " + wait / 1000 + " seconds");
+        console.log("Transaction hash: " + hash);
 
-        setTimeout(() => {
+        it = setInterval(() => {
             var receipt = web3.eth.getTransactionReceipt(hash);
             if (receipt) {
                 console.log(receipt);
+                clearInterval(it);
+
                 if (current < lines.length) {
                     handler(lines, current + 1);
                 }
             } else {
-                console.error("Failed to retrieve the receipt for transaction: " + hash);
+                console.log("Transaction receipt not yet available");
             }
-        }, wait);
+        }, 2000);
     });
 }
 
