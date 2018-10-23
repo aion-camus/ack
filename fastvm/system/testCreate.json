@@ -61,5 +61,20 @@
         "nrg": "1000000"
       }
     ]
+  },
+  {
+    "name": "create_empty_account",
+    "description": "can create empty account in a smart contract",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "0x600060006000f0"
+        },
+        "nrg": "1000000"
+      }
+    ]
   }
 ]
