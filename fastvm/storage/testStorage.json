@@ -20,6 +20,15 @@
           "method": "f()"
         },
         "nrg": "1000000"
+      },
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_LAST_DEPLOYED}",
+        "value": "0",
+        "data": {
+          "method": "reset()"
+        },
+        "nrg": "1000000"
       }
     ]
   }
