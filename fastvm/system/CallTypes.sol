@@ -1,14 +1,13 @@
 pragma solidity ^0.4.0;
 
 contract D {
-    address e;
+    uint public n;
+    address public sender;
 
+    address e;
     function D() {
         e = new E();
     }
-
-    uint public n;
-    address public sender;
 
     function callSetN(uint _n) {
         e.call(bytes4(sha3("setN(uint128)")), _n); // E's storage is set, D is not modified
