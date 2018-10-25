@@ -20,13 +20,13 @@ function handler(lines, current) {
                 console.log(receipt);
                 clearInterval(it);
 
-                if (current < lines.length) {
+                if (current < lines.length - 1) {
                     handler(lines, current + 1);
                 }
             } else {
                 console.log("Transaction receipt not yet available");
             }
-        }, 2000);
+        }, 1000);
     });
 }
 
