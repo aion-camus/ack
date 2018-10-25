@@ -15,6 +15,21 @@
     ]
   },
   {
+    "name": "call_nobody_zero_value",
+    "description": "can call a non-existing account",
+    "transactions": [
+      {
+        "type": "CALL",
+        "receiver": "${ADDRESS_RANDOM}",
+        "value": "0",
+        "data": {
+          "raw": ""
+        },
+        "nrg": "1000000"
+      }
+    ]
+  },
+  {
     "name": "call_sink",
     "description": "can call the Sink smart contract",
     "transactions": [
