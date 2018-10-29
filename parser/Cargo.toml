@@ -4,9 +4,9 @@ version = "0.1.0"
 authors = ["Yulong Wu <yulong@aion.network>"]
 
 [dependencies]
-ethcore-transaction = { path = "../../ethcore/transaction" }
-ethereum-types = { path = "../../external/ethereum-types" }
-ethcore-bytes = { path = "../../util/bytes" }
+acore-transaction = { path = "../../core/transaction" }
+aion-types = { path = "../../util/aion-types" }
+acore-bytes = { path = "../../util/bytes" }
 blake2b = { path = "../../util/blake2b" }
 crypto = { path = "../../util/crypto" }
 rlp = { path = "../../util/rlp" }

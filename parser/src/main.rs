@@ -1,7 +1,7 @@
 extern crate blake2b;
 extern crate crypto;
-extern crate ethcore_transaction as transaction;
-extern crate ethereum_types;
+extern crate acore_transaction as transaction;
+extern crate aion_types;
 extern crate rand;
 extern crate rlp;
 extern crate rustc_hex;
@@ -11,7 +11,7 @@ extern crate serde_derive;
 extern crate serde_json;
 
 use blake2b::blake2b;
-use ethereum_types::{Address, U256};
+use aion_types::{Address, U256};
 use rlp::{Encodable, RlpStream};
 use rustc_hex::FromHex;
 use self::crypto::digest::Digest;
