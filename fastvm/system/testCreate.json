@@ -30,6 +30,21 @@
     ]
   },
   {
+    "name": "create_empty_account_by_code",
+    "description": "can create an empty account (nonce = 1) during create initialization",
+    "transactions": [
+      {
+        "type": "CREATE",
+        "receiver": "",
+        "value": "0",
+        "data": {
+          "raw": "0x600060006000f0"
+        },
+        "nrg": "1000000"
+      }
+    ]
+  },
+  {
     "name": "create_contract_by_code",
     "description": "can create contract by code",
     "transactions": [
