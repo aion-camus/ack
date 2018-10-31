@@ -50,7 +50,7 @@
     "description": "test StaticCall with or without value, selfdestruct/log/sstore in StaticCall",
     "transactions": [
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "0",
         "data": {
@@ -59,7 +59,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -68,7 +68,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -77,7 +77,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -86,7 +86,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -95,7 +95,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -104,7 +104,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
@@ -113,7 +113,7 @@
         "nrg": "1000000"
       },
       {
-        "type": "CALL",
+        "type": "CREATE",
         "receiver": "",
         "value": "10",
         "data": {
